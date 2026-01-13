@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arlan Panagoda 3rd Months Remembrance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .memorial-text {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 25px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #5568d3;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Confirmation Slip Styles */
+        .slip-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .slip-modal.show {
+            display: flex;
+        }
+
+        .slip-container {
+            background: white;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .slip-content {
+            padding: 30px;
+        }
+
+        .slip-header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .slip-header h2 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .slip-header .subtitle {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .slip-receipt-no {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .slip-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .slip-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .slip-row:last-child {
+            border-bottom: none;
+        }
+
+        .slip-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .slip-value {
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .slip-amount-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .slip-amount-highlight .label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .slip-amount-highlight .amount {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .slip-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .slip-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-print, .btn-close {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-print {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #5568d3;
+        }
+
+        .btn-close {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-close:hover {
+            background: #d0d0d0;
+        }
+
+        .verification-code {
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+        }
+
+        /* Organizer Section */
+        .organizer-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .organizer-section details summary {
+            cursor: pointer;
+            color: #888;
+            font-size: 13px;
+            text-align: center;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .organizer-section details summary:hover {
+            color: #667eea;
+        }
+
+        .export-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .slip-modal, .slip-modal * {
+                visibility: visible;
+            }
+            .slip-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: white;
+            }
+            .slip-actions {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .slip-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Arlan Panagoda<br>3rd Months Remembrance</h1>
+            <p>Contribution Form</p>
+        </div>
+
+        <div class="memorial-text">
+            May his soul rest in peace 🙏
+        </div>
+
+        <form id="contributionForm">
+            <div class="form-group">
+                <label for="kidName">Child's Name <span class="required">*</span></label>
+                <input type="text" id="kidName" name="kidName" placeholder="Enter child's name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class">Class <span class="required">*</span></label>
+                <input type="text" id="class" name="class" placeholder="e.g., Grade 5A" required>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount (Rs.) <span class="required">*</span></label>
+                <input type="number" id="amount" name="amount" placeholder="Enter amount" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentSlip">Payment Confirmation Slip <span class="required">*</span></label>
+                <input type="file" id="paymentSlip" name="paymentSlip" accept="image/*,.pdf" required>
+                <small style="color: #888; font-size: 12px; display: block; margin-top: 5px;">
+                    📎 Upload screenshot or photo of bank transfer confirmation
+                </small>
+            </div>
+
+            <div id="imagePreview" style="display: none; margin-top: 10px;">
+                <img id="previewImg" style="max-width: 100%; border-radius: 8px; border: 2px solid #e0e0e0;">
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Contribution</button>
+        </form>
+
+        <!-- Organizer/Collector Section - Hidden from general view -->
+        <div class="organizer-section">
+            <details id="organizerDetails">
+                <summary>🔒 Organizer Access</summary>
+                <div id="passwordPrompt" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #333; margin-bottom: 15px; text-align: center;">Enter Password</h4>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="password" id="organizerPassword" placeholder="Organizer password" 
+                               style="flex: 1; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px;">
+                        <button onclick="checkPassword()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            Unlock
+                        </button>
+                    </div>
+                    <p id="passwordError" style="color: #e74c3c; font-size: 12px; margin-top: 10px; text-align: center; display: none;">
+                        ❌ Incorrect password
+                    </p>
+                    <p style="color: #888; font-size: 11px; text-align: center; margin-top: 10px; font-style: italic;">
+                        Contact the organizer for password
+                    </p>
+                </div>
+                <div id="organizerPanel" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #333; margin-bottom: 15px; text-align: center;">Export Contributions</h4>
+                    <p style="color: #666; font-size: 13px; text-align: center; margin-bottom: 15px;">
+                        Total Contributions: <strong><span id="totalCount">0</span></strong> | 
+                        Total Amount: <strong>Rs. <span id="totalAmount">0</span></strong>
+                    </p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                        <button onclick="exportToExcel()" class="export-btn">
+                            📊 Export to Excel
+                        </button>
+                        <button onclick="exportToCSV()" class="export-btn">
+                            📄 Export to CSV
+                        </button>
+                    </div>
+                    <div style="border-top: 1px solid #ddd; padding-top: 15px; margin-top: 15px;">
+                        <button onclick="clearAllData()" style="background: #dc3545; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; border: none; font-weight: 600; width: 100%;">
+                            🗑️ Clear All Data (Reset Form)
+                        </button>
+                        <p style="color: #999; font-size: 10px; text-align: center; margin-top: 8px;">
+                            Use this to remove test entries before going live
+                        </p>
+                    </div>
+                    <p style="color: #888; font-size: 11px; text-align: center; margin-top: 15px; font-style: italic;">
+                        For organizer use only - Full list will be exported to file
+                    </p>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- Confirmation Slip Modal -->
+    <div class="slip-modal" id="slipModal">
+        <div class="slip-container">
+            <div class="slip-content" id="slipContent">
+                <div class="slip-header">
+                    <h2>Arlan Panagoda<br>3rd Months Remembrance</h2>
+                    <div class="subtitle">CONTRIBUTION CONFIRMATION</div>
+                </div>
+
+                <div class="slip-receipt-no">
+                    Receipt No: <span id="slipReceiptNo"></span>
+                </div>
+
+                <div class="slip-details">
+                    <div class="slip-row">
+                        <span class="slip-label">Child's Name:</span>
+                        <span class="slip-value" id="slipKidName"></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Class:</span>
+                        <span class="slip-value" id="slipClass"></span>
+                    </div>
+                    <div class="slip-row">
+                        <span class="slip-label">Date & Time:</span>
+                        <span class="slip-value" id="slipDateTime"></span>
+                    </div>
+                </div>
+
+                <div class="slip-amount-highlight">
+                    <div class="label">Amount Contributed</div>
+                    <div class="amount">Rs. <span id="slipAmount"></span></div>
+                </div>
+
+                <div class="slip-details" style="margin-top: 20px;">
+                    <div style="text-align: center; margin-bottom: 10px; font-weight: 600; color: #333;">
+                        Payment Confirmation Slip
+                    </div>
+                    <div style="text-align: center;">
+                        <img id="slipPaymentImage" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 2px solid #e0e0e0;">
+                    </div>
+                </div>
+
+                <div class="verification-code">
+                    Verification Code: <span id="slipVerificationCode"></span>
+                </div>
+
+                <div class="slip-footer">
+                    <p>Thank you for your generous contribution.</p>
+                    <p style="margin-top: 10px; font-style: italic;">May his soul rest in peace</p>
+                </div>
+
+                <div class="slip-actions">
+                    <button class="btn-print" onclick="printSlip()">🖨️ Print Slip</button>
+                    <button class="btn-close" onclick="closeSlip()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ORGANIZER PASSWORD - Change this to your desired password
+        const ORGANIZER_PASSWORD = "arlan2026";  // ⚠️ CHANGE THIS PASSWORD!
+
+        // Store submissions in localStorage
+        let submissions = JSON.parse(localStorage.getItem('contributions')) || [];
+
+        // Update totals on load
+        updateTotals();
+
+        // Password check function
+        function checkPassword() {
+            const enteredPassword = document.getElementById('organizerPassword').value;
+            const errorMsg = document.getElementById('passwordError');
+            
+            if (enteredPassword === ORGANIZER_PASSWORD) {
+                // Correct password - show organizer panel
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('organizerPanel').style.display = 'block';
+                errorMsg.style.display = 'none';
+            } else {
+                // Wrong password - show error
+                errorMsg.style.display = 'block';
+                document.getElementById('organizerPassword').value = '';
+                document.getElementById('organizerPassword').focus();
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('organizerPassword');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+        });
+
+        // File upload preview
+        document.getElementById('paymentSlip').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('contributionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const kidName = document.getElementById('kidName').value.trim();
+            const className = document.getElementById('class').value.trim();
+            const amount = parseInt(document.getElementById('amount').value);
+            const paymentSlipFile = document.getElementById('paymentSlip').files[0];
+
+            if (kidName && className && amount > 0 && paymentSlipFile) {
+                // Read the payment slip image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const paymentSlipData = e.target.result;
+
+                    // Generate unique receipt number
+                    const receiptNo = generateReceiptNumber();
+                    const verificationCode = generateVerificationCode();
+                    const timestamp = new Date();
+
+                    // Create submission object
+                    const submission = {
+                        id: Date.now(),
+                        receiptNo: receiptNo,
+                        verificationCode: verificationCode,
+                        kidName: kidName,
+                        class: className,
+                        amount: amount,
+                        paymentSlip: paymentSlipData,
+                        paymentSlipName: paymentSlipFile.name,
+                        timestamp: timestamp.toLocaleString(),
+                        timestampISO: timestamp.toISOString()
+                    };
+
+                    // Add to submissions array
+                    submissions.push(submission);
+
+                    // Save to localStorage
+                    localStorage.setItem('contributions', JSON.stringify(submissions));
+
+                    // Show confirmation slip
+                    showConfirmationSlip(submission);
+
+                    // Reset form
+                    document.getElementById('contributionForm').reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+
+                    // Update totals
+                    updateTotals();
+                };
+                reader.readAsDataURL(paymentSlipFile);
+            }
+        });
+
+        function generateReceiptNumber() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 9000) + 1000;
+            return `AP-${year}${month}${day}-${random}`;
+        }
+
+        function generateVerificationCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 8; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code.match(/.{1,4}/g).join('-');
+        }
+
+        function showConfirmationSlip(submission) {
+            // Populate slip details
+            document.getElementById('slipReceiptNo').textContent = submission.receiptNo;
+            document.getElementById('slipKidName').textContent = submission.kidName;
+            document.getElementById('slipClass').textContent = submission.class;
+            document.getElementById('slipAmount').textContent = submission.amount.toLocaleString();
+            document.getElementById('slipDateTime').textContent = submission.timestamp;
+            document.getElementById('slipVerificationCode').textContent = submission.verificationCode;
+            document.getElementById('slipPaymentImage').src = submission.paymentSlip;
+
+            // Show modal
+            document.getElementById('slipModal').classList.add('show');
+        }
+
+        function closeSlip() {
+            document.getElementById('slipModal').classList.remove('show');
+        }
+
+        function printSlip() {
+            window.print();
+        }
+
+        function updateTotals() {
+            const totalCount = submissions.length;
+            const totalAmount = submissions.reduce((sum, sub) => sum + sub.amount, 0);
+            
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('totalAmount').textContent = totalAmount.toLocaleString();
+        }
+
+        // Export to CSV function
+        function exportToCSV() {
+            if (submissions.length === 0) {
+                alert('No contributions to export');
+                return;
+            }
+
+            const headers = ['Receipt No', 'Verification Code', 'Child Name', 'Class', 'Amount (Rs.)', 'Date & Time', 'Payment Slip File'];
+            const rows = submissions.map(sub => [
+                sub.receiptNo,
+                sub.verificationCode,
+                sub.kidName,
+                sub.class,
+                sub.amount,
+                sub.timestamp,
+                sub.paymentSlipName || 'N/A'
+            ]);
+
+            let csvContent = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            // Add summary row
+            const total = submissions.reduce((sum, sub) => sum + sub.amount, 0);
+            csvContent += '\n';
+            csvContent += `"","","","TOTAL",${total},"",""\n`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            const date = new Date().toISOString().split('T')[0];
+            link.download = `Arlan_Panagoda_Contributions_${date}.csv`;
+            link.click();
+            
+            // Show success message
+            alert(`✅ Exported ${submissions.length} contributions to CSV file!`);
+        }
+
+        // Export to Excel (HTML format that Excel can open)
+        function exportToExcel() {
+            if (submissions.length === 0) {
+                alert('No contributions to export');
+                return;
+            }
+
+            const total = submissions.reduce((sum, sub) => sum + sub.amount, 0);
+            
+            let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Arlan Panagoda 3rd Months Remembrance - Contributions Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #333; margin-bottom: 5px; }
+        .header p { color: #666; font-style: italic; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background-color: #667eea; color: white; padding: 12px; text-align: left; border: 1px solid #ddd; }
+        td { padding: 10px; border: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .total-row { background-color: #667eea !important; color: white; font-weight: bold; font-size: 16px; }
+        .summary { margin-top: 30px; background: #f0f0f0; padding: 15px; border-radius: 5px; }
+        .footer { margin-top: 30px; text-align: center; color: #888; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Arlan Panagoda 3rd Months Remembrance</h1>
+        <p>Contribution Report - Generated on ${new Date().toLocaleString()}</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No.</th>
+                <th style="width: 15%;">Receipt No</th>
+                <th style="width: 15%;">Verification Code</th>
+                <th style="width: 20%;">Child's Name</th>
+                <th style="width: 10%;">Class</th>
+                <th style="width: 12%;">Amount (Rs.)</th>
+                <th style="width: 20%;">Date & Time</th>
+            </tr>
+        </thead>
+        <tbody>
+`;
+
+            submissions.forEach((sub, index) => {
+                html += `
+            <tr>
+                <td style="text-align: center;">${index + 1}</td>
+                <td>${sub.receiptNo}</td>
+                <td>${sub.verificationCode}</td>
+                <td>${sub.kidName}</td>
+                <td>${sub.class}</td>
+                <td style="text-align: right;">${sub.amount.toLocaleString()}</td>
+                <td>${sub.timestamp}</td>
+            </tr>
+`;
+            });
+
+            html += `
+            <tr class="total-row">
+                <td colspan="5" style="text-align: right; padding-right: 20px;">TOTAL AMOUNT COLLECTED:</td>
+                <td style="text-align: right;">Rs. ${total.toLocaleString()}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="summary">
+        <h3>Summary</h3>
+        <p><strong>Total Contributions:</strong> ${submissions.length}</p>
+        <p><strong>Total Amount Collected:</strong> Rs. ${total.toLocaleString()}</p>
+        <p><strong>All contributions verified with payment slips</strong> ✓</p>
+    </div>
+    
+    <div class="footer">
+        <p>May his soul rest in peace 🙏</p>
+        <p>This report was generated from the Arlan Panagoda Remembrance Contribution System</p>
+    </div>
+</body>
+</html>
+`;
+
+            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            const date = new Date().toISOString().split('T')[0];
+            link.download = `Arlan_Panagoda_Contributions_Report_${date}.xls`;
+            link.click();
+            
+            // Show success message
+            alert(`✅ Exported ${submissions.length} contributions to Excel file!
+            
+You can open this file in:
+• Microsoft Excel
+• Google Sheets
+• LibreOffice Calc`);
+        }
+
+        // Optional: Export full data with images
+        function exportData() {
+            const dataStr = JSON.stringify(submissions, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'arlan_panagoda_contributions_full.json';
+            link.click();
+        }
+
+        // Clear all data function
+        function clearAllData() {
+            // First, ask for password confirmation
+            const passwordConfirm = prompt('🔒 Security Check\n\nEnter organizer password to confirm deletion:');
+            
+            if (passwordConfirm !== ORGANIZER_PASSWORD) {
+                alert('❌ Incorrect password. Data deletion cancelled.');
+                return;
+            }
+            
+            // Password correct, now proceed with deletion confirmation
+            const confirmation = confirm('⚠️ WARNING: This will permanently delete ALL contribution records!\n\nTotal to delete: ' + submissions.length + ' contributions\n\nAre you sure you want to continue?\n\nThis action cannot be undone.');
+            
+            if (confirmation) {
+                const doubleCheck = confirm('FINAL CONFIRMATION: Delete all ' + submissions.length + ' contributions?\n\nType of data to be deleted:\n• All contribution records\n• All payment slips\n• All receipt numbers\n\nThis cannot be undone!');
+                
+                if (doubleCheck) {
+                    // Clear localStorage
+                    localStorage.removeItem('contributions');
+                    
+                    // Reset submissions array
+                    submissions = [];
+                    
+                    // Update display
+                    updateTotals();
+                    
+                    // Show success message
+                    alert('✅ All data has been cleared successfully!\n\nThe form is now reset to zero.\nTotal contributions: 0\nTotal amount: Rs. 0\n\nReady for fresh submissions.');
+                }
+            }
+        }
+
+        // Make functions available globally
+        window.exportData = exportData;
+        window.exportToCSV = exportToCSV;
+        window.exportToExcel = exportToExcel;
+        window.closeSlip = closeSlip;
+        window.printSlip = printSlip;
+        window.checkPassword = checkPassword;
+        window.clearAllData = clearAllData;
+
+        // Close modal when clicking outside
+        document.getElementById('slipModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSlip();
+            }
+        });
+    </script>
+</body>
+</html>
